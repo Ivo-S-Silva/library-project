@@ -60,6 +60,37 @@ router.get("/books/:bookId", (req, res, next) => {
         })
 });
 
+router.get("/books/:bookId/edit", (req,res,next) => {
+    const id = req.params.bookId;
+
+    Book.findById(id)
+        .then(bookToEdit => {
+            res.render("books/book-edit", {book: bookToEdit})
+        })
+        .catch((err) => {
+            console.log("Error getting books from db", err);
+            next(err);
+        })
+})
+
+router.post("/books/:bookId/edit", (req, res, next) => {
+    const id = req.params.bookId;
+
+    Book.updateOne({id: id}, {
+        title: req.params.title,
+        author: req.params.author,
+        rating: req.params.rating,
+        description: req.params.description
+    })
+    .then(() => {
+        res.redirect("/books")
+    })
+    .catch((err) => {
+        console.log("Error updating book on db", err);
+        next(err);
+    })
+        
+})
 
 
 module.exports = router;
