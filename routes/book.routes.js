@@ -76,20 +76,33 @@ router.get("/books/:bookId/edit", (req,res,next) => {
 router.post("/books/:bookId/edit", (req, res, next) => {
     const id = req.params.bookId;
 
-    Book.updateOne({id: id}, {
-        title: req.params.title,
-        author: req.params.author,
-        rating: req.params.rating,
-        description: req.params.description
-    })
-    .then(() => {
-        res.redirect("/books")
+    const newDetails = {
+        title: req.body.title,
+        author: req.body.author,
+        rating: req.body.rating,
+        description: req.body.description
+    }
+
+    Book.findByIdAndUpdate(id, newDetails)
+    .then((bookFromDB) => {
+        res.redirect(`/books/${bookFromDB._id}`)
     })
     .catch((err) => {
         console.log("Error updating book on db", err);
         next(err);
     })
         
+})
+
+router.post("/books/:bookId/delete", (req, res, next) => {
+    const id = req.params.bookId;
+
+    Book.findByIdAndDelete(id)
+        .then(() => res.redirect("/books"))
+        .catch((err) => {
+            console.log("Error updating book on db", err);
+            next(err);
+        })
 })
 
 
