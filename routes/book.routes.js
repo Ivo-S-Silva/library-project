@@ -25,6 +25,28 @@ router.get("/books", (req, res, next) => {
         });
 });
 
+router.get("/books/create", (req, res, next) => {
+    res.render("books/book-create");
+})
+
+router.post("/books/create", (req, res, next) => {
+    const newBook = {
+        title: req.body.title,
+        author: req.body.author,
+        rating: req.body.rating,
+        description: req.body.description
+    }
+
+    Book.create(newBook)
+        .then(newBook => {
+            res.redirect("/books");
+        })
+        .catch(err => {
+            console.log("Error creating new book", err);
+            next(err);
+        })
+})
+
 router.get("/books/:bookId", (req, res, next) => {
     const id = req.params.bookId;
     
@@ -37,5 +59,7 @@ router.get("/books/:bookId", (req, res, next) => {
             next(err);
         })
 });
+
+
 
 module.exports = router;
