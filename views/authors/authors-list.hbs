@@ -8,10 +8,13 @@
     <h5>Country of Origin: {{this.country}}</h5>
     <form action="/authors/{{this.id}}/delete" method="POST">
     <br>
+    <a href="/authors/{{this._id}}">See Books From Author</a>
+    <br> <br>
       <a href="/authors/{{this._id}}/edit">Edit</a>
       <br> <br>
       <button>Delete</button>
     </form>
         <hr>
 </section>
+
 {{/each}}
