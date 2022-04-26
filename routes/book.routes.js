@@ -75,7 +75,6 @@ router.get("/books/:bookId/edit", (req,res,next) => {
     let bookToEdit;
 
     Book.findById(id)
-        .populate("author")
         .then(bookFromDB => {
             bookToEdit = bookFromDB;
             return Author.find();

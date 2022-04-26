@@ -1,0 +1,17 @@
+<h1>List of Authors in our Database</h1>
+
+<hr>
+{{#each authors}}
+<section class="box author-summary">
+    <h2>{{this.name}}</h2>
+    <h4>Favourite Food: {{this.favouriteFood}}</h4>
+    <h5>Country of Origin: {{this.country}}</h5>
+    <form action="/authors/{{this.id}}/delete" method="POST">
+    <br>
+      <a href="/authors/{{this._id}}/edit">Edit</a>
+      <br> <br>
+      <button>Delete</button>
+    </form>
+        <hr>
+</section>
+{{/each}}

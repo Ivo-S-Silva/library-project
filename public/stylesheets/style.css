@@ -4,16 +4,26 @@ body {
 }
 
 a {
-  color: #00b7ff;
+  color: #0026ff;
 }
 
 h1 {
   color: 15px;
+  margin: 3rem auto 1rem;
 }
 
-.book-summary {
-  background-color: #ccc;
+form {
+  display: block;
+  margin: 1rem auto;
+}
+
+header {
+  text-align: center;
+}
+
+.box {
+  background-color: #eee;
   border: 1px solid #666;
-  margin: 1rem;
+  margin: 1rem auto;
   padding: 1rem;
 }
