@@ -1,4 +1,5 @@
 const Book = require("../models/Book.model");
+const Author = require("../models/Author.model");
 
 const router = require("express").Router();
 
@@ -16,6 +17,7 @@ const router = require("express").Router();
 router.get("/books", (req, res, next) => {
 
     Book.find()
+        .populate("author")
         .then( (booksArr) => {
             res.render("books/books-list", {books: booksArr});
         })
@@ -26,7 +28,16 @@ router.get("/books", (req, res, next) => {
 });
 
 router.get("/books/create", (req, res, next) => {
-    res.render("books/book-create");
+    Author.find()
+        .then(authorsArray => {
+            res.render("books/book-create", {authors: authorsArray});
+        })
+        .catch((err) => {
+            console.log("Error getting authors from db", err);
+            next(err);
+        })
+
+
 })
 
 router.post("/books/create", (req, res, next) => {
@@ -51,6 +62,7 @@ router.get("/books/:bookId", (req, res, next) => {
     const id = req.params.bookId;
     
     Book.findById(id)
+        .populate("author")
         .then((bookDetails) => {
             res.render("books/book-details", {book: bookDetails});
         })
@@ -67,10 +79,7 @@ router.get("/books/:bookId/edit", (req,res,next) => {
         .then(bookToEdit => {
             res.render("books/book-edit", {book: bookToEdit})
         })
-        .catch((err) => {
-            console.log("Error getting books from db", err);
-            next(err);
-        })
+        .catch(A)
 })
 
 router.post("/books/:bookId/edit", (req, res, next) => {
@@ -98,7 +107,7 @@ router.post("/books/:bookId/delete", (req, res, next) => {
     const id = req.params.bookId;
 
     Book.findByIdAndDelete(id)
-        .then(() => res.redirect("/books"))
+        .then((response) => res.redirect("/books"))
         .catch((err) => {
             console.log("Error updating book on db", err);
             next(err);
