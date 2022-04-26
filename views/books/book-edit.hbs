@@ -7,7 +7,11 @@
   </label>
 <br>
   <label> Author:
-    <input type="text" name="author" value="{{book.author}}"/>
+    <select name="author">
+      {{#each authors}}
+      <option value="{{_id}}">{{name}}</option>
+      {{/each}}
+    </select>
   </label>
 <br>
   <label> Description:

@@ -36,8 +36,6 @@ router.get("/books/create", (req, res, next) => {
             console.log("Error getting authors from db", err);
             next(err);
         })
-
-
 })
 
 router.post("/books/create", (req, res, next) => {
@@ -74,12 +72,21 @@ router.get("/books/:bookId", (req, res, next) => {
 
 router.get("/books/:bookId/edit", (req,res,next) => {
     const id = req.params.bookId;
+    let bookToEdit;
 
     Book.findById(id)
-        .then(bookToEdit => {
-            res.render("books/book-edit", {book: bookToEdit})
+        .populate("author")
+        .then(bookFromDB => {
+            bookToEdit = bookFromDB;
+            return Author.find();
         })
-        .catch(A)
+        .then(authorsArray => {
+            res.render("books/book-edit", {book: bookToEdit, authors: authorsArray})
+        })
+        .catch(err => {
+            console.log("Error getting book from db", err);
+            next(err);
+        })
 })
 
 router.post("/books/:bookId/edit", (req, res, next) => {
